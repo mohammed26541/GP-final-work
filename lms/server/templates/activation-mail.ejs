@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Account Activation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      background-color: #4A6FFF;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .content {
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .code {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      margin: 20px 0;
+      background-color: #eeeeff;
+      border-radius: 5px;
+      letter-spacing: 5px;
+    }
+    .footer {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>LMS Account Activation</h1>
+    </div>
+    <div class="content">
+      <p>Hello <%= user.name %>,</p>
+      <p>Thank you for registering with our Learning Management System. To activate your account, please use the following activation code:</p>
+      
+      <div class="code"><%= activationCode %></div>
+      
+      <p>This code will expire in 5 minutes for security reasons.</p>
+      <p>If you did not register for an account, please ignore this email.</p>
+      <p>Best regards,<br>The LMS Team</p>
+    </div>
+    <div class="footer">
+      <p>This email was sent automatically. Please do not reply to this email.</p>
+      <p>&copy; <%= new Date().getFullYear() %> Learning Management System. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
