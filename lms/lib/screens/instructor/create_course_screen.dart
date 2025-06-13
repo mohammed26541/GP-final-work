@@ -527,7 +527,7 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: _courseContent.length,
-                        separatorBuilder: (_, __) => const Divider(),
+                        separatorBuilder: (_, _) => const Divider(),
                         itemBuilder: (context, index) {
                           return ContentSectionItem(
                             index: index,

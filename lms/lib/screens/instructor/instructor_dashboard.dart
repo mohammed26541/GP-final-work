@@ -276,7 +276,7 @@ class _InstructorDashboardState extends State<InstructorDashboard> {
                                           course.thumbnail,
                                           fit: BoxFit.cover,
                                           errorBuilder:
-                                              (_, __, ___) => Container(
+                                              (_, _, _) => Container(
                                                 color: Colors.grey[300],
                                                 child: const Icon(
                                                   Icons.image,

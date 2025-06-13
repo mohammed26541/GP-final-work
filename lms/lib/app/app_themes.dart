@@ -36,7 +36,7 @@ class AppThemes {
           fontWeight: FontWeight.w600,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         clipBehavior: Clip.antiAlias,
@@ -133,7 +133,9 @@ class AppThemes {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        backgroundColor: colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.5,
+        ),
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -143,7 +145,7 @@ class AppThemes {
         thickness: 1,
         space: 24,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: colorScheme.surface,
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -195,7 +197,7 @@ class AppThemes {
           fontWeight: FontWeight.w600,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         color: colorScheme.surfaceContainerHighest,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -292,7 +294,9 @@ class AppThemes {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        backgroundColor: colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.5,
+        ),
         labelStyle: TextStyle(color: colorScheme.onSurfaceVariant),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -302,7 +306,7 @@ class AppThemes {
         thickness: 1,
         space: 24,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: colorScheme.surface,
         elevation: 3,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
