@@ -2,8 +2,10 @@ class ApiEndpoints {
   // For Android emulators, use 10.0.2.2 to access the host machine's localhost
   // For physical devices on the same network, use your computer's actual IP address
   // For iOS simulators, use localhost
-  
-  static const String baseUrl = 'http://192.168.0.103:8000/api/v1';
+
+  static const String baseUrl =
+      'https://elbazlearning.chickenkiller.com/api/v1';
+  //static const String baseUrl = 'http://192.168.0.103:8000/api/v1';
   //static const String baseUrl = 'http://10.0.2.2:8000/api/v1';
 
   // Auth endpoints
