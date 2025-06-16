@@ -1,5 +1,7 @@
 class ApiConstants {
-  static const String baseUrl = 'http://192.168.0.103:8000/api/v1';
+  static const String baseUrl =
+      'https://elbazlearning.chickenkiller.com/api/v1';
+  //static const String baseUrl = 'http://192.168.0.103:8000/api/v1';
   //static const String baseUrl = 'http://10.0.2.2:8000/api/v1';
   static const int timeout = 30;
 
