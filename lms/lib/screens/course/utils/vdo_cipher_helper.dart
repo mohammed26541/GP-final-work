@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart' show IOClient;
 import 'package:lms/constants/api_endpoints.dart';
 
 class VdoCipherHelper {
@@ -9,39 +9,52 @@ class VdoCipherHelper {
 
   static Future<Map<String, dynamic>> getVdoCipherOTP(String videoId) async {
     try {
-      final response = await http.post(
+      // Create a custom HttpClient that accepts all certificates
+      final httpClient =
+          HttpClient()
+            ..badCertificateCallback =
+                (X509Certificate cert, String host, int port) => true;
+
+      // Create a custom IOClient using our HttpClient
+      final customClient = IOClient(httpClient);
+
+      print('🎬 Requesting VdoCipher OTP for video ID: $videoId');
+      print('🌐 URL: $baseUrl/getVdoCipherOTP');
+
+      final response = await customClient.post(
         Uri.parse('$baseUrl/getVdoCipherOTP'),
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
         },
         body: jsonEncode({'videoId': videoId}),
       );
 
-      print('VdoCipher Response: ${response.body}');
+      print('📥 VdoCipher Response Status: ${response.statusCode}');
+      print('📥 VdoCipher Response: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['otp'] != null && data['playbackInfo'] != null) {
-          return {
-            'otp': data['otp'],
-            'playbackInfo': data['playbackInfo']
-          };
+          print('✅ Successfully retrieved VdoCipher OTP');
+          return {'otp': data['otp'], 'playbackInfo': data['playbackInfo']};
         } else {
+          print('❌ Invalid VdoCipher response format: $data');
           throw Exception('Invalid VdoCipher response format');
         }
       } else {
+        print('❌ Failed to get VdoCipher OTP: ${response.statusCode}');
         throw Exception('Failed to get VdoCipher OTP: ${response.statusCode}');
       }
     } catch (e) {
-      print('VdoCipher Error: $e');
+      print('❌ VdoCipher Error: $e');
       throw Exception('Error getting VdoCipher OTP: $e');
     }
   }
 
   static Future<bool> isEmulator() async {
     if (!Platform.isAndroid) return false;
-    
+
     try {
       // Common emulator indicators
       final model = await _getAndroidProperty('ro.product.model');
@@ -51,13 +64,13 @@ class VdoCipherHelper {
       final fingerprint = await _getAndroidProperty('ro.build.fingerprint');
 
       return model.toLowerCase().contains('sdk') ||
-             manufacturer.toLowerCase().contains('genymotion') ||
-             brand.toLowerCase().contains('generic') ||
-             hardware.toLowerCase().contains('goldfish') ||
-             hardware.toLowerCase().contains('ranchu') ||
-             fingerprint.toLowerCase().contains('generic') ||
-             fingerprint.toLowerCase().contains('sdk') ||
-             fingerprint.toLowerCase().contains('emulator');
+          manufacturer.toLowerCase().contains('genymotion') ||
+          brand.toLowerCase().contains('generic') ||
+          hardware.toLowerCase().contains('goldfish') ||
+          hardware.toLowerCase().contains('ranchu') ||
+          fingerprint.toLowerCase().contains('generic') ||
+          fingerprint.toLowerCase().contains('sdk') ||
+          fingerprint.toLowerCase().contains('emulator');
     } catch (e) {
       // If we can't determine, assume it's not an emulator
       return false;

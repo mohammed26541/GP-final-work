@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lms/screens/dashboard/my_courses_screen.dart';
 import 'package:provider/provider.dart';
 import '../../models/course/course.dart';
 import '../../providers/auth_provider/auth_provider.dart';
@@ -148,7 +149,7 @@ class _PaymentFirstCheckoutScreenState
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => CourseContentScreen(courseId: widget.course.id),
+          builder: (context) => MyCoursesScreen(),
         ),
         (route) => route.isFirst,
       );

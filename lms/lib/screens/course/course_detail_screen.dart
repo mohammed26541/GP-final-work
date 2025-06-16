@@ -588,39 +588,46 @@ class _CourseDetailScreenState extends State<CourseDetailScreen>
         borderRadius: BorderRadius.circular(16),
         padding: const EdgeInsets.all(24),
         margin: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.lock_outline,
-              size: 64,
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.lock_outline,
+                  size: 64,
+                  color: colorScheme.onSurfaceVariant.withAlpha(127),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  message,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Purchase this course to access all features and content',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                SafeArea(
+                  child: CustomButton(
+                    text: 'Purchase Course',
+                    icon: Icons.shopping_cart,
+                    onPressed: _enrollCourse,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              message,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: colorScheme.onSurface,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Purchase this course to access all features and content',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            CustomButton(
-              text: 'Purchase Course',
-              icon: Icons.shopping_cart,
-              onPressed: _enrollCourse,
-            ),
-          ],
+          ),
         ),
       ),
     );

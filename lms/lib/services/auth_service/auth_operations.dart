@@ -5,6 +5,7 @@ import '../../constants/app_constants.dart';
 import '../../models/user/user.dart';
 import '../api_service/api_service.dart';
 import 'user_storage.dart';
+import 'package:dio/dio.dart';
 
 /// Handles core authentication operations like registration, login, and activation
 class AuthOperations {
@@ -143,7 +144,7 @@ class AuthOperations {
       final data = {'email': email, 'password': password};
 
       // Add debug log
-      print('Sending login data: $data');
+      print('🔑 Attempting login with email: $email');
 
       // Get the raw response
       final responseData = await _apiService.post(
@@ -152,41 +153,59 @@ class AuthOperations {
       );
 
       // Debug log to see what the response looks like
-      print('Login response: $responseData');
+      print('📥 Login response received: $responseData');
 
       // Store password temporarily for token refresh
-      // Note: In production, consider using a more secure approach like flutter_secure_storage
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('temp_password', password);
 
       // Handle different response formats
       if (responseData is Map<String, dynamic>) {
+        print('📦 Processing login response data...');
+
         if (responseData.containsKey('success') &&
             responseData['success'] == true) {
-          // New API format with success: true
+          print('✅ Login successful, extracting user data...');
+
           String? token = responseData['accessToken'];
           final userData = responseData['user'];
 
           if (token != null && userData != null) {
+            print('👤 Creating user object from response data...');
             final user = User.fromJson(userData);
+
+            print('💾 Saving token and user data...');
             await _userStorage.saveToken(token);
             await _userStorage.saveUser(user);
+
+            print('✅ Login process completed successfully');
             return user;
           } else {
+            print('❌ Missing token or user data in response');
             throw Exception(
               'Invalid response format: Missing token or user data',
             );
           }
         } else if (responseData.containsKey('message')) {
-          // Error message from server
+          print('❌ Server returned error message: ${responseData['message']}');
           throw Exception(responseData['message']);
+        } else {
+          print('❌ Unexpected response format: $responseData');
+          throw Exception('Login failed: Unexpected response format');
         }
+      } else {
+        print('❌ Response is not a Map: ${responseData.runtimeType}');
+        throw Exception('Login failed: Invalid response type');
       }
-
-      // If we reach here, the response format is unexpected
-      throw Exception('Login failed: Unexpected response format');
     } catch (e) {
-      print('Login error: $e');
+      print('❌ Login error: $e');
+      if (e is DioException) {
+        print('🌐 Dio error details:');
+        print('  Type: ${e.type}');
+        print('  Message: ${e.message}');
+        print('  Response: ${e.response?.data}');
+        print('  Status: ${e.response?.statusCode}');
+      }
       rethrow;
     }
   }

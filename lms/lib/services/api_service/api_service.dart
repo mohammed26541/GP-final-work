@@ -26,8 +26,9 @@ class ApiService {
         BaseOptions(
           // Use the same base URL from ApiEndpoints class to ensure consistency
           baseUrl: ApiEndpoints.baseUrl,
-          connectTimeout: const Duration(seconds: 15),
-          receiveTimeout: const Duration(seconds: 15),
+          connectTimeout: const Duration(seconds: 30), // Increased timeout
+          receiveTimeout: const Duration(seconds: 30), // Increased timeout
+          sendTimeout: const Duration(seconds: 30), // Added send timeout
           validateStatus: (status) {
             // Consider all status codes as valid to handle them properly
             return true;
@@ -37,6 +38,10 @@ class ApiService {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
+          // Enable following redirects
+          followRedirects: true,
+          // Enable receiving data when status code is not 200
+          receiveDataWhenStatusError: true,
         ),
       ),
       _cookieManager = ApiCookieManager(),
@@ -46,8 +51,29 @@ class ApiService {
       final client = HttpClient();
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
+      // Add more detailed logging for SSL/TLS issues
+      client.findProxy = (uri) {
+        print('🔍 Finding proxy for: ${uri.toString()}');
+        return 'DIRECT';
+      };
       return client;
     };
+
+    // Add a global error handler
+    _dio.interceptors.add(
+      LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+        responseBody: true,
+        error: true,
+        logPrint: (object) {
+          print('🌐 Dio Log: $object');
+        },
+      ),
+    );
+
     // Async initialization will be done on first request
     _ensureInitialized();
   }
