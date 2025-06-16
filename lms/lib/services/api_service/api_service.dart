@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import '../../constants/api_endpoints.dart';
 
 import 'api_cookie_manager.dart';
@@ -31,10 +32,22 @@ class ApiService {
             // Consider all status codes as valid to handle them properly
             return true;
           },
+          // Add headers for better error handling
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
         ),
       ),
       _cookieManager = ApiCookieManager(),
       _errorHandler = ApiErrorHandler() {
+    // Configure Dio to handle SSL certificate validation using the newer API
+    (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final client = HttpClient();
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
     // Async initialization will be done on first request
     _ensureInitialized();
   }
